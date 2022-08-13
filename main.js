@@ -88,7 +88,7 @@ function createWindow() {
   });
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setResizable(false);
-  mainWindow.loadFile("index.html");
+  mainWindow.loadFile("./src/pages/prepare.html");
   mainWindow.on("maximize", () => mainWindow.unmaximize());
   ipcMain.on("main_show", () => mainWindow.show());
   ipcMain.on('main_hide', () => {mainWindow.hide();})

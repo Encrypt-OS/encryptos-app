@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdn.snaildos.com/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.snaildos.com/w3.css">
 <script src="https://cdn.snaildos.com/bootstrap.min.js"></script>
-<title>Loading EncryptOS</title>
+<title>EncryptOS</title>
 <style>
 	body {
 		background: black;
@@ -166,17 +166,40 @@
 		alert("yay")
 	} else {
 		$('#status').text('Validating if this OS is EncryptOS...')
-		run_script('cat /usr/lib/encryptos-release')
+		async function checksystem() {
+		await run_script('cat /usr/lib/encryptos-release')
+		}
+		checksystem()
 		var output = localStorage.getItem('output')
-		console.log(output)
 		if (output == null) {
 			$('#status').text('This system is not running EncryptOS.')
 			$('#loader').hide()
 			$('#quit').show();
 		} else {
-			alert("bozo")
+			axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
+			var supportedos = value.data.supportedversions
+
+		// now check if OS is actually supported...
+		var supported =  supportedos
+		should = "VERSION=2022.07.19";
+		localStorage.setItem('supportedos', "false")
+		// incrementing for loop
+	    for (var i = 0; i < supported.length; i++) {
+			if (should == supported[i]) {
+			localStorage.setItem('supportedos', "true")
+			break;
+			}
+		}});
+		}}
+		// If operating system is supported
+		var issupported = localStorage.getItem('supportedos')
+		if (issupported == "true") {
+			// The operating is EncryptOS and it is supported. 
+			window.location.href = "../../index.html";
+		} else {
+			// In theory, we would run unsupported checks. We are not ready yet to code this.
+			alert("uh oh")
 		}
-	}
 }
 </script>
 </html>
