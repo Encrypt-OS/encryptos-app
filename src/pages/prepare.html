@@ -155,7 +155,6 @@
 	if (os.platform() != 'linux') {
 		$('#status').text('An error has occurred.')
 		$('#loader').hide()
-		alert('An error has occurred.')
 	} else {
 		$('#status').text('Validating OS version...')
 		axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
@@ -163,7 +162,7 @@
 		});
 	// Next Phase
 	if (latest == os.release()) {
-		alert("yay")
+		$('#status').text('yay')
 	} else {
 		$('#status').text('Validating if this OS is EncryptOS...')
 		async function checksystem() {
@@ -198,7 +197,7 @@
 			window.location.href = "../../index.html";
 		} else {
 			// In theory, we would run unsupported checks. We are not ready yet to code this.
-			alert("uh oh")
+			$('#status').text('EncryptOS outdated. Performing more checks...')
 		}
 }
 </script>
