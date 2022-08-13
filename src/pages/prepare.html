@@ -185,7 +185,9 @@
 		// incrementing for loop
 	    for (var i = 0; i < supported.length; i++) {
 			if (should == supported[i]) {
-			localStorage.setItem('supportedos', "true")
+			localStorage.removeItem('supportedos')
+			localStorage.removeItem('supported')
+			localStorage.removeItem('output')
 			window.location.href = "../../index.html";
 			}
 		}});

@@ -69,7 +69,7 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new glasstron.BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
     show: false,
     titlebarStyle: "hiddenInset",
