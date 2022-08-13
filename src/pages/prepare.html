@@ -58,12 +58,23 @@
 		transform: translate(-50%, -50%);
 	}
 </style>
+<script>
+	const { ipcRenderer } = require('electron');
+	function quit() {
+		ipcRenderer.send('appquit')
+	}
+</script>
 </head>
 <body>
 	<div class="center">
 		<h2 class="w3-center" id="status">Preparing your EncryptOS system...</h2>
+		<br>
 		<div class="w3-center" id="loader">
 			<span class="loading__anim"></span>
+		</div>
+		<br>
+		<div class="w3-center" id="quit">
+		<button class="w3-btn w3-white w3-round-large" id="quit" onclick="quit()">Quit</button>
 		</div>
 	</div>
 </body>
@@ -76,11 +87,17 @@
 	const axios = require('axios')
 	const Store = require('electron-store');
 	const store = new Store();
+
+	// Pre-hide
+	$('#quit').hide();
+
 	// Script Function
 	// This function will output the lines from the script 
 	// and will return the full combined output
 	// as well as exit code when it's done (using the callback).
 	function run_script(command, args, callback) {
+		var output = "null"
+
 		var child = child_process.spawn(command, args, {
 			encoding: 'utf8',
 			shell: true
@@ -97,8 +114,10 @@
 		child.stdout.setEncoding('utf8');
 		child.stdout.on('data', (data) => {
 			//Here is the output
-			data=data.toString();   
-			console.log(data);      
+			data=data.toString();
+			console.log(data);
+			var output = data;
+			localStorage.setItem('output', output);
 		});
 
 		child.stderr.setEncoding('utf8');
@@ -116,6 +135,8 @@
 		});
 		if (typeof callback === 'function')
 			callback();
+	
+		return output;
 	}
 	// Variables
 	const latest = "null";
@@ -131,7 +152,7 @@
 	store.set('logged_in', false)
 	store.set('token', "null")
 	// window.location.href = "../../index.html";
-	if (os.platform() != 'Linux') {
+	if (os.platform() != 'linux') {
 		$('#status').text('An error has occurred.')
 		$('#loader').hide()
 		alert('An error has occurred.')
@@ -145,7 +166,16 @@
 		alert("yay")
 	} else {
 		$('#status').text('Validating if this OS is EncryptOS...')
-		run_script('start')
+		run_script('cat /usr/lib/encryptos-release')
+		var output = localStorage.getItem('output')
+		console.log(output)
+		if (output == null) {
+			$('#status').text('This system is not running EncryptOS.')
+			$('#loader').hide()
+			$('#quit').show();
+		} else {
+			alert("bozo")
+		}
 	}
 }
 </script>
