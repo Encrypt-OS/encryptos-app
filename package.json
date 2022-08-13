@@ -1,0 +1,48 @@
+{
+  "name": "EncryptOS",
+  "version": "1.0.0",
+  "description": "Official EncryptOS daemon, settings, updater and manager for the EncryptOS operating system.",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Encrypt-OS/EncryptOS-app.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "changelog": "gitmoji-changelog",
+    "build": "electron-builder build --win --linux appimage --publish never",
+    "snap": "electron-builder build --linux snap --publish never",
+    "deploy": "electron-builder build --win --linux appimage --publish always"
+  },
+  "author": "SnailDOS",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "20.0.2",
+    "electron-builder": "23.3.3",
+    "gitmoji-changelog": "2.3.0"
+  },
+  "build": {
+    "protocols": [
+      {
+        "name": "encryptos",
+        "schemes": [
+          "encryptos"
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "axios": "0.27.2",
+    "bufferutil": "^4.0.3",
+    "electron-store": "8.1.0",
+    "electron-updater": "5.2.1",
+    "glasstron": "0.1.1",
+    "is-online": "9.0.1",
+    "isdev": "1.0.1",
+    "jquery": "3.6.0",
+    "native-is-elevated": "^0.5.0",
+    "utf-8-validate": "^5.0.4",
+    "uuidv4": "6.2.13"
+  }
+}

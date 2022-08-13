@@ -1,0 +1,7 @@
+node_modules
+dist
+.vscode/settings.json
+electron-builder.yml
+package-lock.json
+package-lock.json
+yarn.lock

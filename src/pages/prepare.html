@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.snaildos.com/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.snaildos.com/w3.css">
+<script src="https://cdn.snaildos.com/bootstrap.min.js"></script>
+<title>Loading EncryptOS</title>
+<style>
+	body {
+		background: black;
+	}
+	
+	h2 {
+		color: white;
+	}
+
+	.loading {
+		max-width: 50%;
+		line-height: 1.4;
+		font-size: 1.2rem;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	.loadWords {
+		font-weight: normal;
+		font-size: 0.9rem;
+		color: rgba(189, 189, 189, 1);
+		margin: 0.6rem 0 2rem 0;
+		display: block;
+	}
+
+	.loading__anim {
+		width: 35px;
+		height: 35px;
+		border: 5px solid rgba(189, 189, 189, 0.25);
+		border-left-color: rgb(255, 255, 255);
+		border-top-color: rgb(155, 159, 161);
+		border-radius: 50%;
+		display: inline-block;
+		animation: rotate 600ms infinite linear;
+	}
+
+	@keyframes rotate {
+		to {
+			transform: rotate(1turn);
+		}
+	}
+
+	.center {
+		margin: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-ms-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+	}
+</style>
+</head>
+<body>
+	<div class="center">
+		<h2 class="w3-center" id="status">Preparing your EncryptOS system...</h2>
+		<div class="w3-center" id="loader">
+			<span class="loading__anim"></span>
+		</div>
+	</div>
+</body>
+<script>
+	// Imports
+	const electron = require('electron');
+	const child_process = require('child_process');
+	const dialog = electron.dialog;
+	var os = require('os');
+	const axios = require('axios')
+	const Store = require('electron-store');
+	const store = new Store();
+	// Script Function
+	// This function will output the lines from the script 
+	// and will return the full combined output
+	// as well as exit code when it's done (using the callback).
+	function run_script(command, args, callback) {
+		var child = child_process.spawn(command, args, {
+			encoding: 'utf8',
+			shell: true
+		});
+		// You can also use a variable to save the output for when the script closes later
+		child.on('error', (error) => {
+			dialog.showMessageBox({
+				title: 'Title',
+				type: 'warning',
+				message: 'Error occured.\r\n' + error
+			});
+		});
+
+		child.stdout.setEncoding('utf8');
+		child.stdout.on('data', (data) => {
+			//Here is the output
+			data=data.toString();   
+			console.log(data);      
+		});
+
+		child.stderr.setEncoding('utf8');
+		child.stderr.on('data', (data) => {
+			// Return some data to the renderer process with the mainprocess-response ID
+			mainWindow.webContents.send('mainprocess-response', data);
+			//Here is the output from the command
+			console.log(data);  
+		});
+
+		child.on('close', (code) => {
+			//Here you can get the exit code of the script  
+			console.log("Code executed.")
+
+		});
+		if (typeof callback === 'function')
+			callback();
+	}
+	// Variables
+	const latest = "null";
+
+	// Start Script
+	console.log("Let's clear localstorage first...")
+	localStorage.removeItem('cookie-consent', 'true');
+	console.log("Just wait a bit...")
+	console.log("Update true. Setting now.")
+	localStorage.setItem('version', '2.0.9');
+	// import rest of stuff here
+	store.set('setup', true)
+	store.set('logged_in', false)
+	store.set('token', "null")
+	// window.location.href = "../../index.html";
+	if (os.platform() != 'Linux') {
+		$('#status').text('An error has occurred.')
+		$('#loader').hide()
+		alert('An error has occurred.')
+	} else {
+		$('#status').text('Validating OS version...')
+		axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
+			const latest = value.data.version
+		});
+	// Next Phase
+	if (latest == os.release()) {
+		alert("yay")
+	} else {
+		$('#status').text('Validating if this OS is EncryptOS...')
+		run_script('start')
+	}
+}
+</script>
+</html>
