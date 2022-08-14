@@ -94,6 +94,7 @@
       padding: 20px;
       font-family: sans-serif;
       text-align: center;
+      border-radius: 25px;
     }
 
     .center { margin: 0 auto; width: 400px; }
@@ -259,6 +260,8 @@
       float:left;
       width:50%;
       overflow:hidden;
+      border-top-left-radius: 30px;
+      border-bottom-left-radius: 30px;
     }
 
     .right {
@@ -268,11 +271,49 @@
       background-color: rgba(0,0,0,.5);
       color: #fff;
       height: 100% !important;
+      border-top-right-radius: 30px;
+      border-bottom-right-radius: 30px;
     }
 
   video {
     height:auto;
     max-height:100%
+  }
+
+  .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    opacity: 0.5;
+    font-size: 15px;
+  }
+
+  .active, .collapsible:hover {
+    background-color: #555;
+  }
+
+  .collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
+
+  .active:after {
+    content: "\2212";
+  }
+
+  .colcontent {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #00000041;
   }
 </style>
 </head>
@@ -307,6 +348,14 @@
 
   <h1>EncryptOS</h1>
   <h4>Powered by <b>SnailDOS</b> team</h4>
+  <button class="collapsible">System Infomation</button>
+  <div class="colcontent">
+    <p  style="color: white !important;">Version:</p>
+  </div>
+  <button class="collapsible">System Updates</button>
+  <div class="colcontent">
+    <p  style="color: white !important;">ok</p>
+  </div>
   <p id="version"></p>
 
 </div>
@@ -352,7 +401,19 @@
 </div>
 </body>
 <script>
-  var gradient = new Gradient()
-  gradient.initGradient('#gradient-canvas');
-</script>
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+  
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+  </script>
 </html>
