@@ -350,7 +350,7 @@
   <h4>Powered by <b>SnailDOS</b> team</h4>
   <button class="collapsible">System Infomation</button>
   <div class="colcontent">
-    <p  style="color: white !important;">Version:</p>
+    <p style="color: white !important;"> Distro Version:</p><p id="version" style="color: white !important;">N/A</p>
   </div>
   <button class="collapsible">System Updates</button>
   <div class="colcontent">
@@ -401,6 +401,9 @@
 </div>
 </body>
 <script>
+  const Store = require('electron-store');
+	const store = new Store()
+
   var coll = document.getElementsByClassName("collapsible");
   var i;
   
@@ -415,5 +418,7 @@
       }
     });
   }
+
+  $("#version").text(store.get('version'))
   </script>
 </html>
