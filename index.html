@@ -156,7 +156,7 @@
 
     .settings {
       position: absolute;
-      top: 30px;
+      top: 20px;
       right: 16px;
       font-size: 18px;
       background-color: white;
@@ -281,7 +281,7 @@
   }
 
   .collapsible {
-    background-color: #777;
+    background-color: rgb(0, 0, 0);
     color: white;
     cursor: pointer;
     padding: 18px;
@@ -352,11 +352,14 @@
   <div class="colcontent">
     <p style="color: white !important;"> Distro Version:</p><p id="version" style="color: white !important;">N/A</p>
   </div>
-  <button class="collapsible">System Updates</button>
+  <button class="collapsible">Package Updates</button>
   <div class="colcontent">
-    <p  style="color: white !important;">ok</p>
+    <p  style="color: white !important;">This is not implimented yet! Please, run <code>sudo pacman -Syu</code> inside a terminal!</p>
   </div>
-  <p id="version"></p>
+  <button class="collapsible">Distro Updates</button>
+  <div class="colcontent">
+    <p  style="color: white !important;">EncryptOS is not officially released yet. Therefor, Distro Updates are not available.</p>
+  </div>
 
 </div>
 

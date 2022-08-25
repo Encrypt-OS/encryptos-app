@@ -176,14 +176,17 @@
 			x = localStorage.getItem(error)
 			if (x == "undefined") {
 				x = 1
+				location.reload()
 			} else {
 				x + 1
+				location.reload()
 			}
 			if (x = "2") {
-				$('#status').text('This system is not running EncryptOS.')
 				$('#loader').hide()
 				$('#quit').show();
-				throw new Error('This is not an error. This is just to abort javascript');
+				$('#status').text('This system is not running EncryptOS.')
+				throw new Error();
+				letscallaninvalidfunctiontoabortthescript()
 			}
 			localStorage.setItem('error', x)
 		} else {
