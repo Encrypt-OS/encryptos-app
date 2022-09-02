@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>EncryptOS Updater</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.snaildos.com/w3.css">
+    <link rel="stylesheet" href="https://cdn.snaildos.com/bootstrap.min.css">
+    <script src="https://cdn.snaildos.com/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            vertical-align: auto;
+            height: 200px;
+            text-align: center;
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        $( document ).ready(function() {
+            $('#welcome').hide();
+        });
+
+        // Imports
+        const child_process = require('child_process');
+        const electron = require('electron');
+        
+        // Script Function
+        // This function will output the lines from the script 
+        // and will return the full combined output
+        // as well as exit code when it's done (using the callback).
+        function run_script(command, args, callback) {
+            var output = "null"
+    
+            var child = child_process.spawn(command, args, {
+                encoding: 'utf8',
+                shell: true
+            });
+            // You can also use a variable to save the output for when the script closes later
+            child.on('error', (error) => {
+                dialog.showMessageBox({
+                    title: 'Title',
+                    type: 'warning',
+                    message: 'Error occured.\r\n' + error
+                });
+            });
+    
+            child.stdout.setEncoding('utf8');
+            child.stdout.on('data', (data) => {
+                //Here is the output
+                data=data.toString();
+                console.log(data);
+                var output = data.replace(/ /g,'').replace(/(\r\n|\n|\r)/gm, "");
+                localStorage.setItem('outputpkg', output);
+            });
+    
+            child.stderr.setEncoding('utf8');
+            child.stderr.on('data', (data) => {
+                // Return some data to the renderer process with the mainprocess-response ID
+                mainWindow.webContents.send('mainprocess-response', data);
+                //Here is the output from the command
+                console.log(data);  
+            });
+    
+            child.on('close', (code) => {
+                //Here you can get the exit code of the script  
+                console.log("Code executed.")
+    
+            });
+            if (typeof callback === 'function')
+                callback();
+        
+            return output;
+        }
+
+        async function update() {
+            $('#main').hide();
+            $('#welcome').show();
+            await run_script('curl https://cdn.snaildos.com/os/encryptos/encryptos-package.sh > /tmp/encryptos-package.sh && sudo konsole -e sudo bash /tmp/encryptos-package.sh')
+            setInterval(function a() {
+                setInterval(function b() {
+                    run_script('sudo cat /tmp/update.txt')
+                }, 1000);
+                output = localStorage.getItem('outputpkg')
+                if (output == "done") {
+                    $('#welcome').hide();
+                    $('#main').show();
+                    run_script('sudo rm /tmp/update.txt')
+                    clearInterval(a);
+                    clearInterval(b);
+                    localStorage.removeItem('outputpkg')
+                    location.reload();
+
+                }
+            }, 1500);
+        }
+    </script>
+</head>
+<body>
+    <div id="main">
+    <h1>Welcome To EncryptOS Package Updater</h1>
+    <br>
+    <button onclick="function exit(){ window.location='../../index.html' };exit()" class="w3-white w3-btn w3-round">Exit</button>
+    <button onclick="update()" class="w3-white w3-btn w3-round">Update</button>
+    </div>
+
+    <div id="welcome">
+        <h1>Update Script Is Running... Please focus on the terminal window...</h1>
+    </div>
+</body>
+</html>

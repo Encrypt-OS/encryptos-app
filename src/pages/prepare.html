@@ -144,7 +144,6 @@
 	// Start Script
 	console.log("Let's clear localstorage first...")
 	localStorage.setItem('error', '0');
-	localStorage.removeItem('cookie-consent', 'true');
 	console.log("Just wait a bit...")
 	console.log("Update true. Setting now.")
 	localStorage.setItem('version', '2.0.9');
@@ -173,22 +172,25 @@
 		var output = localStorage.getItem('output')
 		store.set('version', output)
 		if (output == null) {
-			$('#status').text('This system is not running EncryptOS.')
-			x = localStorage.getItem(error)
+			$('#status').text('Validating System...')
+			x = localStorage.getItem('error')
 			if (x == "undefined") {
 				x = 1
+				localStorage.setItem('error', x)
 				location.reload()
 			} else {
-				x + 1
+				x = x + 1
+				localStorage.setItem('error', x)
 				location.reload()
 			}
-			if (x = "2") {
+			if (x = "50") {
 				window.location.href = "notsupported.html";
 				$('#loader').hide()
 				$('#quit').show();
 				$('#status').text('This system is not running EncryptOS.')
+				window.location.href = "notsupported.html";
 			}
-			localStorage.setItem('error', x)
+			console.log("Operating System Validated...")
 		} else {
 			axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
 			var supportedos = value.data.supportedversions
@@ -237,8 +239,6 @@
 			$('#loader').hide()
 			$('#quit').show();
 			$('#status').text('Your operating system is unsupported. Please take backups and reinstall EncryptOS...')
-
-			// Preform checks here
 		}
 }
 </script>
