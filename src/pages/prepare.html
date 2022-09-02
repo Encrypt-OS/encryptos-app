@@ -70,7 +70,7 @@
 		<h2 class="w3-center" id="status">Preparing your EncryptOS system...</h2>
 		<br>
 		<div class="w3-center" id="loader">
-			<span class="loading__anim"></span>
+			<span class="loading__anim" id="loader"></span>
 		</div>
 		<br>
 		<div class="w3-center" id="quit">
@@ -233,6 +233,10 @@
 				window.location.href = "updateos.html";
 				}
 			}});
+
+			$('#loader').hide()
+			$('#quit').show();
+			$('#status').text('Your operating system is unsupported. Please take backups and reinstall EncryptOS...')
 
 			// Preform checks here
 		}
