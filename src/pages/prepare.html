@@ -185,8 +185,7 @@
 				$('#loader').hide()
 				$('#quit').show();
 				$('#status').text('This system is not running EncryptOS.')
-				throw new Error();
-				letscallaninvalidfunctiontoabortthescript()
+				window.location.href = "notsupported.html";
 			}
 			localStorage.setItem('error', x)
 		} else {
