@@ -143,6 +143,7 @@
 
 	// Start Script
 	console.log("Let's clear localstorage first...")
+	localStorage.setItem('error', '0');
 	localStorage.removeItem('cookie-consent', 'true');
 	console.log("Just wait a bit...")
 	console.log("Update true. Setting now.")
@@ -182,10 +183,10 @@
 				location.reload()
 			}
 			if (x = "2") {
+				window.location.href = "notsupported.html";
 				$('#loader').hide()
 				$('#quit').show();
 				$('#status').text('This system is not running EncryptOS.')
-				window.location.href = "notsupported.html";
 			}
 			localStorage.setItem('error', x)
 		} else {
