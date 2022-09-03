@@ -1,5 +1,5 @@
 {
-  "name": "EncryptOS",
+  "name": "encryptos-app",
   "version": "1.0.0",
   "description": "Official EncryptOS daemon, settings, updater and manager for the EncryptOS operating system.",
   "main": "main.js",
