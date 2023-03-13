@@ -348,6 +348,8 @@
 
   <h1>EncryptOS</h1>
   <h4>Powered by <b>SnailDOS</b> team</h4>
+  <br>
+  <h4 id="#strangeinstall">Your EncryptOS installation does not seem to be installed correctly. Consider reinstalling.</h4>
   <button class="collapsible">System Infomation</button>
   <div class="colcontent">
     <p style="color: white !important;"> Distro Version:</p><p id="version" style="color: white !important;">N/A</p>
@@ -397,10 +399,9 @@
             <hr class="rounded">
             <button onclick="window.location.reload();" class="w3-btn w3-black w3-round">Reload</button>
             <p></p>
-            <button onclick="openNav();" class="w3-btn w3-black w3-round">More Settings</button>
+            <!-- <button onclick="openNav();" class="w3-btn w3-black w3-round">More Settings</button> -->
             <hr class="rounded">
             <p></p>
-              <a style="font-size:20px;cursor:pointer;color:red" href="./src/pages/reset.html">&#9776; Reset SnailFM</a>
 <br>
 </h1>
 </div>
@@ -411,7 +412,7 @@
 
   var coll = document.getElementsByClassName("collapsible");
   var i;
-  
+
   for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
@@ -425,5 +426,8 @@
   }
 
   $("#version").text(store.get('version'))
+  if ((store.getItem('strangeinstallation')) == false) {
+    $("#strangeinstall").hide();
+  }
   </script>
 </html>

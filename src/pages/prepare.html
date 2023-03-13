@@ -188,7 +188,8 @@
 		} else {
 			$('#status').text('You have a strange Installation. Please reconsider reinstalling your installation.')
 			if (output == latest) {
-				$('#status').text('You have a strange Installation. Please reconsider reinstalling your installation.')
+				await store.setItem('strangeinstallation', true)
+				window.location.href = "../../index.html";
 			}
 		}
 	}
