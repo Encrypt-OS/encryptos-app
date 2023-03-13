@@ -183,7 +183,13 @@
 				$('#status').text('This system is not running EncryptOS.')
 				window.location.href = "notsupported.html";
 			}
-			console.log("Operating System Validated...")
+			console.log("Operating System Failure...")
+			$('#status').text('Error code N9TT-9G0A. Please open an issue on GitHub or consider reinstalling.')
+		} else {
+			$('#status').text('You have a strange Installation. Please reconsider reinstalling your installation.')
+			if (output == latest) {
+				$('#status').text('You have a strange Installation. Please reconsider reinstalling your installation.')
+			}
 		}
 	}
 }
