@@ -11,7 +11,7 @@
 	body {
 		background: black;
 	}
-	
+
 	h2 {
 		color: white;
 	}
@@ -125,7 +125,7 @@
 			// Return some data to the renderer process with the mainprocess-response ID
 			mainWindow.webContents.send('mainprocess-response', data);
 			//Here is the output from the command
-			console.log(data);  
+			console.log(data);
 		});
 
 		child.on('close', (code) => {
@@ -135,22 +135,16 @@
 		});
 		if (typeof callback === 'function')
 			callback();
-	
+
 		return output;
 	}
 	// Variables
-	const latest = "null";
+	const latest = 'null';
 
 	// Start Script
-	console.log("Let's clear localstorage first...")
+	console.log("Remove unused variables...")
 	localStorage.setItem('error', '0');
 	console.log("Just wait a bit...")
-	console.log("Update true. Setting now.")
-	localStorage.setItem('version', '2.0.9');
-	// import rest of stuff here
-	store.set('setup', true)
-	store.set('logged_in', false)
-	store.set('token', "null")
 	// window.location.href = "../../index.html";
 	if (os.platform() != 'linux') {
 		$('#status').text('An error has occurred.')
@@ -158,11 +152,12 @@
 	} else {
 		$('#status').text('Validating OS version...')
 		axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
-			const latest = value.data.version
+			const latest = value.data.supportedversions
 		});
 	// Next Phase
 	if (latest == os.release()) {
 		$('#status').text('yay')
+		alert('h.');
 	} else {
 		$('#status').text('Validating if this OS is EncryptOS...')
 		async function checksystem() {
@@ -191,55 +186,8 @@
 				window.location.href = "notsupported.html";
 			}
 			console.log("Operating System Validated...")
-		} else {
-			axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
-			var supportedos = value.data.supportedversions
-
-		// now check if OS is actually supported...
-		var supported =  supportedos
-		var should = localStorage.getItem('output')
-		localStorage.setItem('supportedos', "false")
-		// incrementing for loop
-	    for (var i = 0; i < supported.length; i++) {
-			if (should == supported[i]) {
-			localStorage.removeItem('supportedos')
-			localStorage.removeItem('supported')
-			localStorage.removeItem('output')
-			window.location.href = "../../index.html";
-			}
-		}});
-		}}
-		// If operating system is supported
-		var issupported = localStorage.getItem('supportedos')
-		if (issupported == "true") {
-			// The operating is EncryptOS and it is supported. 
-			localStorage.removeItem('supportedos')
-			localStorage.removeItem('supported')
-			localStorage.removeItem('output')
-			window.location.href = "../../index.html";
-		} else {
-			// In theory, we would run unsupported checks. We are not ready yet to code this.
-			$('#status').text('EncryptOS outdated. Performing more checks...')
-			axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
-			var unsupportedos = value.data.unsupportedversions
-
-			// now check if OS is actually supported...
-			var should = localStorage.getItem('output')
-			localStorage.setItem('supportedos', "false")
-			// incrementing for loop
-			for (var i = 0; i < unsupportedos.length; i++) {
-				if (should == unsupportedos[i]) {
-				localStorage.removeItem('supportedos')
-				localStorage.removeItem('supported')
-				localStorage.setItem("unsupported", "true")
-				window.location.href = "updateos.html";
-				}
-			}});
-
-			$('#loader').hide()
-			$('#quit').show();
-			$('#status').text('Your operating system is unsupported. Please take backups and reinstall EncryptOS...')
 		}
+	}
 }
 </script>
 </html>
