@@ -187,9 +187,15 @@
 			$('#status').text('Error code N9TT-9G0A. Please open an issue on GitHub or consider reinstalling.')
 		} else {
 			$('#status').text('You have a strange Installation. Please reconsider reinstalling your installation.')
+			await axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
+			const latest = value.data.supportedversions
+			});
+			await run_script('cat /usr/lib/encryptos-release')
 			if (output == latest) {
 				await store.setItem('strangeinstallation', true)
 				window.location.href = "../../index.html";
+			} else {
+				$('#status').text('This operating system is unsupported.')
 			}
 		}
 	}
