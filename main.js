@@ -84,6 +84,7 @@ function createWindow() {
       nodeIntegration: true,
       nativeWindowOpen: true,
       contextIsolation: false,
+      sandbox: false,
     },
   });
   mainWindow.setMenuBarVisibility(false);
@@ -113,12 +114,12 @@ function createWindow() {
         const notification3 = {
           title: "EncryptOS",
           body: "No valid network connection! Please reconnect!",
-        };        
+        };
       mainWindow.loadFile("./src/pages/nonet.html");
       new Notification(notification3).show();
       }
     })();
-    
+
     mainWindow.show();
     console.log("Ok! Window init, let's check for updates...");
     autoUpdater.checkForUpdatesAndNotify();
@@ -157,7 +158,7 @@ function createloginWindow() {
     const notification4 = {
       title: "EncryptOS",
       body: "This window won't close unless you login! If you want to exit the login and logout, press the close button 3 times!",
-    };        
+    };
     loginclose = loginclose + 1;
     if (loginclose === 3) {
       store.set('logged_in', false)
