@@ -146,12 +146,13 @@
 	localStorage.setItem('error', '0');
 	console.log("Just wait a bit...")
 	// window.location.href = "../../index.html";
+	async function check() {
 	if (os.platform() != 'linux') {
 		$('#status').text('An error has occurred.')
 		$('#loader').hide()
 	} else {
 		$('#status').text('Validating OS version...')
-		axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
+		await axios.get('https://api.snaildos.com/os/encryptos.json').then((value) => {
 			const latest = value.data.supportedversions
 		});
 	// Next Phase
@@ -160,12 +161,9 @@
 		alert('h.');
 	} else {
 		$('#status').text('Validating if this OS is EncryptOS...')
-		async function checksystem() {
 		await run_script('cat /usr/lib/encryptos-release')
-		}
-		checksystem()
 		var output = localStorage.getItem('output')
-		store.set('version', output)
+		await store.set('version', output)
 		if (output == null) {
 			$('#status').text('Validating System...')
 			x = localStorage.getItem('error')
@@ -189,5 +187,7 @@
 		}
 	}
 }
+};
+check();
 </script>
 </html>
